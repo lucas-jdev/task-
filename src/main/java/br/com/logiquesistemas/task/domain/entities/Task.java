@@ -3,6 +3,7 @@ package br.com.logiquesistemas.task.domain.entities;
 import java.util.Objects;
 import java.util.UUID;
 
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,29 +39,29 @@ public class Task {
 
     public void changeTitle(String title) {
         if (title == null || title.trim().length() == 0)
-            throw new IllegalArgumentException("Title is required");
+            throw new ParamInvalid("Title is required");
         if (this.status == StatusTask.COMPLETED || this.status == StatusTask.ARCHIVED)
-            throw new IllegalArgumentException("task cannot be updated");
+            throw new ParamInvalid("task cannot be updated");
 
         this.title = title;
     }
 
     public void changeDescription(String description) {
         if (description == null)
-            throw new IllegalArgumentException("Description is required");
+            throw new ParamInvalid("Description is required");
         if (this.status == StatusTask.COMPLETED || this.status == StatusTask.ARCHIVED)
-            throw new IllegalArgumentException("Task cannot be updated");
+            throw new ParamInvalid("Task cannot be updated");
 
         this.description = description;
     }
 
     public void changeStatus(String status) { 
         if (status == null)
-            throw new IllegalArgumentException("Status is required");
+            throw new ParamInvalid("Status is required");
         if (this.status == StatusTask.COMPLETED && StatusTask.valueOf(status) != StatusTask.ARCHIVED)
-            throw new IllegalArgumentException("Task completed");
+            throw new ParamInvalid("Task completed");
         if (!ruleChangeStatus(StatusTask.valueOf(status)))
-            throw new IllegalArgumentException("Status invalid");
+            throw new ParamInvalid("Status invalid");
 
         this.status = StatusTask.valueOf(status);
     }
@@ -85,10 +86,6 @@ public class Task {
 
     public String id() {
         return id.toString();
-    }
-
-    public UUID uuid() {
-        return id;
     }
 
     public String title() {
