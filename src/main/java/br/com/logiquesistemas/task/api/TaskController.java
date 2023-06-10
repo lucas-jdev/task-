@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.error.TaskNotFound;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 import br.com.logiquesistemas.task.service.CreateTask;
@@ -34,7 +35,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody InnerTaskDTO dto){
+    public ResponseEntity<Void> save(@RequestBody InnerTaskDTO dto) throws ParamInvalid{
         var createTask = new CreateTask(REPO);
         createTask.execute(new InsertTask(dto.title,dto.description));
 
@@ -79,7 +80,7 @@ public class TaskController {
     
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateTask(@PathVariable String id,@RequestBody UpdateTaskDTO dto)
-        throws IllegalArgumentException{
+        throws ParamInvalid{
         var updateTask = new UpdateTask(REPO);
         updateTask.execute(
             new InnerTaskServiceDTO(id, dto.title, dto.description, dto.status));
