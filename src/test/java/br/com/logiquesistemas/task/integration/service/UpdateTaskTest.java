@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.com.logiquesistemas.task.TaskApplication;
 import br.com.logiquesistemas.task.domain.entities.StatusTask;
 import br.com.logiquesistemas.task.domain.entities.Task;
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 import br.com.logiquesistemas.task.service.UpdateTask;
 import br.com.logiquesistemas.task.service.UpdateTask.InnerTaskServiceDTO;
@@ -31,7 +32,7 @@ class UpdateTaskTest {
     private Task task;
 
     @BeforeAll
-    void setup() {
+    void setup() throws ParamInvalid {
         task = new Task(TITLE, DESCRIPTION);
         repo.create(task);
     }
@@ -43,7 +44,7 @@ class UpdateTaskTest {
 
     @Test
     @DisplayName("Deve atualizar uma task no banco")
-    void testUpdateTaskInDB() {
+    void testUpdateTaskInDB() throws ParamInvalid {
         var updateTask = new UpdateTask(repo);
 
         task.changeStatus(StatusTask.IN_PROGRESS.toString());
