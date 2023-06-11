@@ -59,19 +59,19 @@ class TaskTest {
 
         @Test
         @DisplayName("Deve lançar exceção de argumento inválido para status null")
-        void changeStatusNullShouldToReturnException() {
+        void changeStatusNullShouldToReturnException() throws ParamInvalid {
+            task = new Task(TITLE, DESCRIPTION);
             assertThrows(ParamInvalid.class, () -> {
-                task = new Task(TITLE, DESCRIPTION);
                 task.changeStatus(null);
             });
         }
 
         @Test
         @DisplayName("Deve lançar exceção de argumento inválido para status inválido quando atributo já estiver COMPLETED")
-        void changeStatusInvalidWhenAttributeIsCOMPLETED() {
+        void changeStatusInvalidWhenAttributeIsCOMPLETED() throws ParamInvalid {
+            task = new Task(TITLE, DESCRIPTION);
+            task.changeStatus(StatusTask.COMPLETED.toString());
             assertThrows(ParamInvalid.class, () ->  {
-                task = new Task(TITLE, DESCRIPTION);
-                task.changeStatus(StatusTask.COMPLETED.toString());
                 task.changeStatus(StatusTask.IN_PROGRESS.toString());
             });
         }
