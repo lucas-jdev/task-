@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.logiquesistemas.task.api.error.ApiResponseException;
 import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.error.TaskNotFound;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
@@ -35,9 +36,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody InnerTaskDTO dto) throws ParamInvalid{
+    public ResponseEntity<Void> save(@RequestBody InnerTaskDTO dto) {
         var createTask = new CreateTask(REPO);
-        createTask.execute(new InsertTask(dto.title,dto.description));
+
+        try {
+            createTask.execute(new InsertTask(dto.title,dto.description));
+        } catch (ParamInvalid e) {
+            throw new ApiResponseException(e);
+        }
 
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).build();
     }
@@ -79,11 +85,15 @@ public class TaskController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateTask(@PathVariable String id,@RequestBody UpdateTaskDTO dto)
-        throws ParamInvalid{
+    public ResponseEntity<Void> updateTask(@PathVariable String id,@RequestBody UpdateTaskDTO dto){
         var updateTask = new UpdateTask(REPO);
-        updateTask.execute(
-            new InnerTaskServiceDTO(id, dto.title, dto.description, dto.status));
+        
+        try {
+            updateTask.execute(
+                new InnerTaskServiceDTO(id, dto.title, dto.description, dto.status));
+        } catch (ParamInvalid e) {
+            throw new ApiResponseException(e);
+        }
 
         return ResponseEntity.ok().build();
     }
