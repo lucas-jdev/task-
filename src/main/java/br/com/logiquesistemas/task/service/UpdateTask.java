@@ -1,11 +1,12 @@
 package br.com.logiquesistemas.task.service;
 
 import br.com.logiquesistemas.task.domain.entities.Task;
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 
 public record UpdateTask(TaskRepo repo) {
     
-    public void execute(final InnerTaskServiceDTO dto) {
+    public void execute(final InnerTaskServiceDTO dto) throws ParamInvalid{
         var task = repo.findById(dto.id);
         if (task.isPresent()){
             Task taskUpdate = task.get();
@@ -14,7 +15,7 @@ public record UpdateTask(TaskRepo repo) {
         }
     }
 
-    private void validateInputsToChangeAttributes(InnerTaskServiceDTO dto, Task taskUpdate) {
+    private void validateInputsToChangeAttributes(InnerTaskServiceDTO dto, Task taskUpdate) throws ParamInvalid{
         if (dto.title() != null)
             taskUpdate.changeTitle(dto.title());
         if (dto.description() != null)

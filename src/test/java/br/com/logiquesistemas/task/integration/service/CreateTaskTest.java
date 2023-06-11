@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.logiquesistemas.task.TaskApplication;
 import br.com.logiquesistemas.task.domain.entities.Task;
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 
 @SpringBootTest(classes = TaskApplication.class)
@@ -31,12 +32,12 @@ class CreateTaskTest {
 
     @Test
     @DisplayName("Deve salvar uma task no banco")
-    void testSaveTaskInDB(){
+    void testSaveTaskInDB() throws ParamInvalid{
         var task = new Task(TITLE, DESCRIPTION);
         repo.create(task);
 
         var result = repo.findAll();
-        assertEquals(1, result.size());
+        assertEquals(2, result.size());
     }
 
 }

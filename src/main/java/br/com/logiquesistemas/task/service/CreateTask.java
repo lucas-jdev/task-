@@ -1,11 +1,12 @@
 package br.com.logiquesistemas.task.service;
 
 import br.com.logiquesistemas.task.domain.entities.Task;
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 
 public record CreateTask(TaskRepo repo) {
     
-    public void execute(InsertTask insert){
+    public void execute(InsertTask insert) throws ParamInvalid{
         Task task = new Task(insert.title, insert.description);
         repo.create(task);
     }
