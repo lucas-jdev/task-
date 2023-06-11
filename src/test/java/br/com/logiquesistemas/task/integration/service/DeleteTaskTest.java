@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.logiquesistemas.task.TaskApplication;
 import br.com.logiquesistemas.task.domain.entities.Task;
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 import br.com.logiquesistemas.task.service.DeleteTask;
 
@@ -31,7 +32,7 @@ class DeleteTaskTest {
     private Task task;
 
     @BeforeAll
-    void setup(){
+    void setup() throws ParamInvalid{
         task = new Task(TITLE, DESCRIPTION);
         repo.create(task);
     }
