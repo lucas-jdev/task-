@@ -31,13 +31,13 @@ public class Task {
         this.status = StatusTask.NOT_STARTED;
     }
 
-    public Task(String title, String description) {
+    public Task(String title, String description) throws ParamInvalid{
         this();
         changeTitle(title);
         changeDescription(description);
     }
 
-    public void changeTitle(String title) {
+    public void changeTitle(String title) throws ParamInvalid {
         if (title == null || title.trim().length() == 0)
             throw new ParamInvalid("Title is required");
         if (this.status == StatusTask.COMPLETED || this.status == StatusTask.ARCHIVED)
@@ -46,7 +46,7 @@ public class Task {
         this.title = title;
     }
 
-    public void changeDescription(String description) {
+    public void changeDescription(String description) throws ParamInvalid{
         if (description == null)
             throw new ParamInvalid("Description is required");
         if (this.status == StatusTask.COMPLETED || this.status == StatusTask.ARCHIVED)
@@ -55,7 +55,7 @@ public class Task {
         this.description = description;
     }
 
-    public void changeStatus(String status) { 
+    public void changeStatus(String status) throws ParamInvalid { 
         if (status == null)
             throw new ParamInvalid("Status is required");
         if (this.status == StatusTask.COMPLETED && StatusTask.valueOf(status) != StatusTask.ARCHIVED)
