@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.logiquesistemas.task.TaskApplication;
 import br.com.logiquesistemas.task.domain.entities.Task;
+import br.com.logiquesistemas.task.domain.error.ParamInvalid;
 import br.com.logiquesistemas.task.domain.error.TaskNotFound;
 import br.com.logiquesistemas.task.domain.repository.TaskRepo;
 import br.com.logiquesistemas.task.service.FindTask;
@@ -33,7 +34,7 @@ class FindTaskTest {
     private Task task;
 
     @BeforeAll
-    void setup(){
+    void setup() throws ParamInvalid{
         task = new Task(TITLE, DESCRIPTION);
         repo.create(task);
     }
@@ -56,7 +57,7 @@ class FindTaskTest {
     void testFindAllTask(){
         var findTask = new FindTask(repo);
         Collection<Task> result = findTask.all();
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());
     }
 
 }
