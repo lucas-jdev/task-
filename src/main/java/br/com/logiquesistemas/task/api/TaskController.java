@@ -29,15 +29,15 @@ import br.com.logiquesistemas.task.service.UpdateTask.InnerTaskServiceDTO;
 @RequestMapping("/api/task")
 public class TaskController {
 
-    private final TaskRepo REPO;
+    private final TaskRepo repo;
 
     public TaskController(TaskRepo repo) {
-        REPO = repo;
+        this.repo = repo;
     }
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody InnerTaskDTO dto) {
-        var createTask = new CreateTask(REPO);
+        var createTask = new CreateTask(repo);
 
         try {
             createTask.execute(new InsertTask(dto.title,dto.description));
@@ -50,7 +50,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OutTaskDTO> findById(@PathVariable String id) throws TaskNotFound{
-        var findTask = new FindTask(REPO);
+        var findTask = new FindTask(repo);
         var task = findTask.byId(id);
         return ResponseEntity.ok(
             new OutTaskDTO(
@@ -63,7 +63,7 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<Collection<OutTaskDTO>> findAll(){
-        var findTask = new FindTask(REPO);
+        var findTask = new FindTask(repo);
         List<OutTaskDTO> result = findTask.all()
                                         .stream()
                                         .map(obj -> 
@@ -77,8 +77,8 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable String id) throws TaskNotFound{
-        var deleteTask = new DeleteTask(REPO);
+    public ResponseEntity<Void> deleteById(@PathVariable String id) {
+        var deleteTask = new DeleteTask(repo);
         deleteTask.byId(id);
 
         return ResponseEntity.ok().build();
@@ -86,7 +86,7 @@ public class TaskController {
     
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateTask(@PathVariable String id,@RequestBody UpdateTaskDTO dto){
-        var updateTask = new UpdateTask(REPO);
+        var updateTask = new UpdateTask(repo);
         
         try {
             updateTask.execute(
