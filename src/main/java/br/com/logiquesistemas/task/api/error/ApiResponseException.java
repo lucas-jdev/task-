@@ -2,7 +2,7 @@ package br.com.logiquesistemas.task.api.error;
 
 public class ApiResponseException extends RuntimeException {
 
-    private Exception error;
+    private final Exception error;
 
     public ApiResponseException(Exception e) {
         super(e);
