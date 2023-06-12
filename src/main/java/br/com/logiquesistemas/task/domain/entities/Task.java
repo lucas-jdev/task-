@@ -19,7 +19,7 @@ public class Task {
     private UUID id;
     private String title;
 
-    @Column(name = "description_task")
+    @Column(name = "description_task", columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
